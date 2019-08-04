@@ -1,6 +1,10 @@
-interface Config {
+const REACT_APP_WEATHER_KEY = process.env["REACT_APP_WEATHER_KEY"];
+// import { REACT_APP_WEATHER_KEY } from "react-native-dotenv";
+
+interface IConfig {
   app: {
     name: string;
+    apiKey?: string;
   };
   os: {
     ios: string;
@@ -12,9 +16,10 @@ interface Config {
   };
 }
 
-export const Config: Config = {
+export const Config: IConfig = {
   app: {
-    name: "tiempo-forecast"
+    name: "example",
+    apiKey: REACT_APP_WEATHER_KEY
   },
   os: {
     android: "android",

@@ -1,6 +1,8 @@
 import * as React from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
 
+import { Config } from "../../utils/Config";
+
 const styles = StyleSheet.create({
   button: {
     flex: 1,
@@ -19,17 +21,17 @@ const styles = StyleSheet.create({
   }
 });
 
-interface Props {
+interface IProps {
   name: string;
   enthusiasmLevel?: number;
 }
 
-export interface State {
+export interface IState {
   enthusiasmLevel: number;
 }
 
-export class Welcome extends React.Component<Props, State> {
-  constructor(props: Props) {
+export class Welcome extends React.Component<IProps, IState> {
+  constructor(props: IProps) {
     super(props);
     this.state = {
       enthusiasmLevel: props.enthusiasmLevel || 1
@@ -44,6 +46,8 @@ export class Welcome extends React.Component<Props, State> {
           {this.props.name +
             this.getExclamationMarks(this.state.enthusiasmLevel)}
         </Text>
+
+        <Text>apiKey: {Config.app.apiKey}</Text>
 
         <View style={styles.buttons}>
           <View style={styles.button}>

@@ -14,11 +14,11 @@ const styles = StyleSheet.create({
   }
 });
 
-interface Props {
+interface IProps {
   instructions: string;
 }
 
-export const Instructions = ({ instructions }: Props) => (
+export const Instructions = ({ instructions }: IProps) => (
   <>
     <Text style={styles.welcome}>Welcome to React Native!</Text>
     <Text style={styles.instructions}>
