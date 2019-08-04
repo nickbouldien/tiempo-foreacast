@@ -1,6 +1,11 @@
 import * as React from "react";
 import { Platform, SafeAreaView, StyleSheet } from "react-native";
-import { Instructions, Welcome } from "../../components";
+import {
+  Instructions,
+  Welcome,
+  CurrentWeather,
+  WeatherForecast
+} from "../../components";
 
 const styles = StyleSheet.create({
   container: {
@@ -22,6 +27,9 @@ export const App = () => {
     <SafeAreaView style={styles.container}>
       <Instructions instructions={instructions} />
       <Welcome name="Human" enthusiasmLevel={1} />
+
+      <CurrentWeather />
+      <WeatherForecast />
     </SafeAreaView>
   );
 };

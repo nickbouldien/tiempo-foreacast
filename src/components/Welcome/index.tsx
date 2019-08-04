@@ -31,12 +31,9 @@ export interface IState {
 }
 
 export class Welcome extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props);
-    this.state = {
-      enthusiasmLevel: props.enthusiasmLevel || 1
-    };
-  }
+  state = {
+    enthusiasmLevel: this.props.enthusiasmLevel || 1
+  };
 
   public render() {
     return (
