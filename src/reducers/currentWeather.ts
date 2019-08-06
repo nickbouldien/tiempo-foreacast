@@ -30,7 +30,8 @@ const initialState: ICurrentWeatherState = {
 };
 
 function currentWeather(state = initialState, action: CurrentWeatherAction) {
-  console.log("action.type: ", action.type);
+  // TODO - add redux logger
+  console.log("action: ", action);
   switch (action.type) {
     case "FETCH_WEATHER":
       return {

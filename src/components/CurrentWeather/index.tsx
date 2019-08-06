@@ -36,7 +36,7 @@ class CurrentWeather extends React.Component<Props, IState> {
   render() {
     const { currentWeather } = this.props;
     console.log("state.currentWeather: ", currentWeather);
-    if (!currentWeather || currentWeather.error) {
+    if (!currentWeather || currentWeather.error || !currentWeather.weather) {
       return (
         // TODO - show a more customized error message based on the actual error
         <Text>
@@ -55,6 +55,11 @@ class CurrentWeather extends React.Component<Props, IState> {
           onPress={() => this.props.fetchWeather("knoxville")}
           title="Refetch weather"
         />
+        <Text>city: {currentWeather.weather.city}</Text>
+        <Text>description: {currentWeather.weather.description}</Text>
+        <Text>temperature: {currentWeather.weather.temperature}</Text>
+        <Text>wind: {currentWeather.weather.wind}</Text>
+        <Text>visibility: {currentWeather.weather.visibility}</Text>
       </>
     );
   }

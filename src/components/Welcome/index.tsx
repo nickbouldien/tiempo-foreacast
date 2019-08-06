@@ -1,7 +1,5 @@
 import * as React from "react";
-import { Button, StyleSheet, Text, View } from "react-native";
-
-import { Config } from "../../utils/Config";
+import { StyleSheet, Text, View } from "react-native";
 
 const styles = StyleSheet.create({
   button: {
@@ -13,7 +11,8 @@ const styles = StyleSheet.create({
   },
   greeting: {
     color: "#999",
-    fontWeight: "bold"
+    fontWeight: "bold",
+    fontSize: 24
   },
   root: {
     alignItems: "center",
@@ -38,44 +37,8 @@ export class Welcome extends React.Component<IProps, IState> {
   public render() {
     return (
       <View style={styles.root}>
-        <Text style={styles.greeting}>
-          Hello{" "}
-          {this.props.name +
-            this.getExclamationMarks(this.state.enthusiasmLevel)}
-        </Text>
-
-        <Text>apiKey: {Config.app.apiKey}</Text>
-
-        <View style={styles.buttons}>
-          <View style={styles.button}>
-            <Button
-              title="-"
-              onPress={this.onDecrement}
-              accessibilityLabel="decrement"
-            />
-          </View>
-
-          <View style={styles.button}>
-            <Button
-              title="+"
-              onPress={this.onIncrement}
-              accessibilityLabel="increment"
-            />
-          </View>
-        </View>
+        <Text style={styles.greeting}>Welcome to tiempo-forecast!</Text>
       </View>
     );
   }
-
-  private onIncrement = () =>
-    this.setState({ enthusiasmLevel: this.state.enthusiasmLevel + 1 });
-
-  private onDecrement = () =>
-    this.setState({
-      enthusiasmLevel:
-        this.state.enthusiasmLevel - 1 > 0 ? this.state.enthusiasmLevel - 1 : 0
-    });
-
-  private getExclamationMarks = (numChars: number) =>
-    Array(numChars + 1).join("!");
 }

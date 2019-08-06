@@ -13,7 +13,8 @@ export interface ILocationState {
 
 export type LocationAction =
   | { type: "CHANGE_CITY"; payload: string }
-  | { type: "ERROR"; payload: any };
+  | { type: "ERROR"; payload: any }
+  | { type: "TOGGLE_USE_LOCATION"; payload: any };
 
 const initialState: ILocationState = {
   city: "memphis",
@@ -29,6 +30,16 @@ function location(state = initialState, action: LocationAction) {
       return {
         ...state,
         city: action.payload
+      };
+    case "TOGGLE_USE_LOCATION":
+      return {
+        ...state,
+        useLocation: action.payload
+      };
+    case "ERROR":
+      return {
+        ...state,
+        error: action.payload
       };
     default:
       return state;
