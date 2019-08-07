@@ -9,10 +9,14 @@ export interface ILocationState {
   error: Error | null;
   useLocation: boolean;
   loading: boolean;
+  useZipCode: boolean;
+  zipCode: string | number;
 }
 
 export type LocationAction =
   | { type: "CHANGE_CITY"; payload: string }
+  | { type: "CHANGE_ZIPCODE"; payload: string }
+  | { type: "TOGGLE_USE_ZIPCODE"; payload: boolean }
   | { type: "ERROR"; payload: any }
   | { type: "TOGGLE_USE_LOCATION"; payload: any };
 
@@ -21,20 +25,35 @@ const initialState: ILocationState = {
   coordinates: null,
   useLocation: false,
   error: null,
-  loading: false
+  loading: false,
+  zipCode: "",
+  useZipCode: false
 };
 
-function location(state = initialState, action: LocationAction) {
+function location(
+  state = initialState,
+  action: LocationAction
+): ILocationState {
   switch (action.type) {
     case "CHANGE_CITY":
       return {
         ...state,
         city: action.payload
       };
+    case "CHANGE_ZIPCODE":
+      return {
+        ...state,
+        zipCode: action.payload
+      };
     case "TOGGLE_USE_LOCATION":
       return {
         ...state,
         useLocation: action.payload
+      };
+    case "TOGGLE_USE_ZIPCODE":
+      return {
+        ...state,
+        useZipCode: action.payload
       };
     case "ERROR":
       return {

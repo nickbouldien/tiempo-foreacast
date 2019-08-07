@@ -1,10 +1,15 @@
 import * as React from "react";
-import { SafeAreaView, StyleSheet } from "react-native";
+import { SafeAreaView, StyleSheet, View } from "react-native";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { rootReducer } from "../../rootReducer";
-import { CurrentWeather, WeatherForecast, Welcome } from "../../components";
+import {
+  CurrentWeather,
+  Location,
+  WeatherForecast,
+  Welcome
+} from "../../components";
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
 
@@ -21,10 +26,13 @@ export const App = () => {
   return (
     <Provider store={store}>
       <SafeAreaView style={styles.container}>
-        <Welcome name="Human" enthusiasmLevel={1} />
+        <View style={{ flex: 1 }}>
+          <Welcome name="Human" enthusiasmLevel={1} />
 
-        <CurrentWeather />
-        <WeatherForecast />
+          <Location />
+          <CurrentWeather />
+          <WeatherForecast />
+        </View>
       </SafeAreaView>
     </Provider>
   );
