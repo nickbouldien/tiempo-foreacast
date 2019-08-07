@@ -4,12 +4,6 @@ import { apiUrl } from "../utils/constants";
 import { Config } from "../utils/index";
 import { ICurrentWeather } from "../reducers/currentWeather";
 
-// | { type: "CHANGE_CITY"; payload: string }
-// | { type: "CHANGE_ZIPCODE"; payload: string }
-// | { type: "TOGGLE_USE_ZIPCODE"; payload: boolean }
-// | { type: "ERROR"; payload: any }
-// | { type: "TOGGLE_USE_LOCATION"; payload: any };
-
 /* location */
 export function changeLocation(city: string) {
   return {
@@ -41,7 +35,11 @@ export function toggleUseLocation(useLocation: boolean) {
 
 /* weather */
 export const fetchWeather = (search: string) => (dispatch: Dispatch) => {
-  const url = `${apiUrl}/weather?q=${search}&appid=${Config.app.apiKey}`;
+  const units = true ? "imperial" : "metric"; // TODO - implement
+  const searchString = `${search}&units=${units}&appid=${Config.app.apiKey}`;
+
+  const url = `${apiUrl}/weather?${searchString}`;
+
   console.log("called with : ", search);
   console.log("url : ", url);
 

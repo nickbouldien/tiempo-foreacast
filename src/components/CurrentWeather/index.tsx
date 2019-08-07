@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Button, StyleSheet, Text } from "react-native";
+import { StyleSheet, Text } from "react-native";
 import { connect } from "react-redux";
 import { ThunkDispatch } from "redux-thunk";
 import { fetchWeather } from "../../actions/actionCreators";
@@ -31,7 +31,7 @@ type Props = IStateProps & IOwnProps & IDispatchProps;
 class CurrentWeather extends React.Component<Props, IState> {
   state = {};
   componentDidMount() {
-    this.props.fetchWeather("memphis");
+    this.props.fetchWeather("q=memphis");
   }
   render() {
     const { currentWeather } = this.props;
@@ -51,10 +51,10 @@ class CurrentWeather extends React.Component<Props, IState> {
     return (
       <>
         <Text style={styles.currentWeather}>Current weather</Text>
-        <Button
+        {/* <Button
           onPress={() => this.props.fetchWeather("knoxville")}
           title="Refetch weather"
-        />
+        /> */}
         <Text>city: {currentWeather.weather.city}</Text>
         <Text>description: {currentWeather.weather.description}</Text>
         <Text>temperature: {currentWeather.weather.temperature}</Text>
