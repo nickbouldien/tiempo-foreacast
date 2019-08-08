@@ -50,7 +50,7 @@ class Location extends React.Component<Props, IState> {
     useLocation: false,
     useMetric: false,
     useZip: false,
-    zipCode: ""
+    zipCode: "37996"
   };
 
   refetchWeather = () => {
@@ -101,8 +101,11 @@ class Location extends React.Component<Props, IState> {
           onValueChange={this.updateUseLocation}
           value={this.state.useLocation}
         /> */}
-        <Text>{this.state.useMetric ? "°C" : "°F"}</Text>
-        <Switch onValueChange={this.toggleUnits} value={this.state.useMetric} />
+        {/* <Text>{this.state.useMetric ? "°C" : "°F"}</Text>
+        <Switch onValueChange={this.toggleUnits} value={this.state.useMetric} /> */}
+
+        {/* TODO - best way to make labels in react-native??? */}
+        {/* <Text>search value</Text> */}
         <TextInput
           editable={true}
           maxLength={30}
@@ -110,6 +113,7 @@ class Location extends React.Component<Props, IState> {
           onChangeText={text => this.setState({ searchValue: text })}
           value={this.state.searchValue}
         />
+        {/* <Text>zipcode</Text> */}
         <TextInput
           editable={true}
           maxLength={9}
