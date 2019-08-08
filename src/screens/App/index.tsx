@@ -6,6 +6,7 @@ import thunk from "redux-thunk";
 import { rootReducer } from "../../rootReducer";
 import {
   CurrentWeather,
+  GeoLocation,
   Location,
   WeatherForecast,
   Welcome
@@ -30,6 +31,7 @@ export const App = () => {
           <Welcome name="Human" enthusiasmLevel={1} />
 
           <Location />
+          <GeoLocation />
           <CurrentWeather />
           <WeatherForecast />
         </View>
