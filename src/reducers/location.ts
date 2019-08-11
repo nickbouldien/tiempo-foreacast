@@ -13,11 +13,13 @@ export interface ILocationState {
   zipCode: string | number;
 }
 
+// TODO - add stricter typing
 export type LocationAction =
   | { type: "CHANGE_CITY"; payload: string }
+  | { type: "CHANGE_COORDINATES"; payload: ICoordinates }
   | { type: "CHANGE_ZIPCODE"; payload: string }
   | { type: "TOGGLE_USE_ZIPCODE"; payload: boolean }
-  | { type: "ERROR"; payload: any }
+  | { type: "LOCATION_ERROR"; payload: any }
   | { type: "TOGGLE_USE_LOCATION"; payload: any };
 
 const initialState: ILocationState = {
@@ -55,7 +57,12 @@ function location(
         ...state,
         useZipCode: action.payload
       };
-    case "ERROR":
+    case "CHANGE_COORDINATES":
+      return {
+        ...state,
+        coordinates: action.payload
+      };
+    case "LOCATION_ERROR":
       return {
         ...state,
         error: action.payload

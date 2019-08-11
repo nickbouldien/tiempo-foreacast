@@ -42,3 +42,6 @@ yarn test
 ```sh
 yarn build
 ```
+### TODOs:
+- use constants for action types
+- more complete/stricter typing

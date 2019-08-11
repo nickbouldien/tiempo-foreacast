@@ -1,5 +1,4 @@
 export interface IWeatherForecast {
-  city: string;
   pressure: number | string;
   temperature: number | string;
   wind: number | string;
@@ -12,7 +11,7 @@ export interface IWeatherForecast {
 }
 
 export interface IWeatherForecastState {
-  weather: IWeatherForecast | null;
+  weather: IWeatherForecast[] | null;
   error: Error | null;
   loading: boolean;
 }
@@ -21,7 +20,7 @@ export type WeatherForecastAction =
   | { type: "ERROR_WEATHER_FORECAST"; payload: Error }
   | { type: "FETCH_WEATHER_FORECAST" }
   | { type: "FETCH_WEATHER_FORECAST_FINISHED" }
-  | { type: "UPDATE_WEATHER_FORECAST"; payload: IWeatherForecast };
+  | { type: "UPDATE_WEATHER_FORECAST"; payload: IWeatherForecast[] };
 
 const initialState: IWeatherForecastState = {
   weather: null,

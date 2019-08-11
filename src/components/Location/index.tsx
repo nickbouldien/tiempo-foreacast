@@ -85,8 +85,7 @@ class Location extends React.Component<Props, IState> {
   };
 
   render() {
-    const { location } = this.props;
-    console.log("state.location: ", location);
+    // const { location } = this.props;
     return (
       <>
         <Text style={styles.heading}>location section</Text>

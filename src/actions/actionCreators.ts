@@ -5,6 +5,7 @@ import { Config } from "../utils/index";
 import { ICurrentWeather } from "../reducers/currentWeather";
 import { IWeatherForecast } from "../reducers/weatherForecast";
 import { AppState } from "../rootReducer";
+import { ICoordinates } from "../reducers/location";
 
 /* location actions */
 // TODO - type all of the return values for these functions
@@ -33,6 +34,20 @@ export function toggleUseLocation(useLocation: boolean) {
   return {
     type: "TOGGLE_USE_LOCATION",
     payload: useLocation
+  };
+}
+
+export function updateCoordinates(coordinates: ICoordinates) {
+  return {
+    type: "CHANGE_COORDINATES",
+    payload: coordinates
+  };
+}
+
+export function locationError(error: Error) {
+  return {
+    type: "LOCATION_ERROR",
+    payload: error
   };
 }
 
@@ -143,17 +158,23 @@ function formatData(weatherData: any): ICurrentWeather {
   };
 }
 
-function formatForecastData(weatherData: any): IWeatherForecast {
-  return {
-    city: weatherData.name,
-    dayName: weatherData.dayName,
-    highTemp: weatherData.main.temp_max,
-    humidity: weatherData.humidity,
-    lowTemp: weatherData.main.lowTemp,
-    precipitation: weatherData.precipitation,
-    precipitationType: weatherData.precipitationType,
-    pressure: weatherData.main.pressure,
-    temperature: weatherData.main.temp,
-    wind: weatherData.wind.speed
-  };
+function formatForecastData(weatherData: any): IWeatherForecast[] {
+  // the don't actually have the percent chance of precipition by day
+  // https://openweathermap.desk.com/customer/portal/questions/17457140-forecast-precipitation
+  let data = weatherData.list.map((day: any) => {
+    // TODO - format the data
+    return {
+      dayName: "", // TODO - day.dayName,
+      highTemp: day.main.temp_max,
+      humidity: day.main.humidity,
+      lowTemp: day.main.temp_min,
+      precipitation: day.weather[0].main,
+      precipitationType: day.weather[0].description,
+      pressure: day.main.pressure,
+      temperature: day.main.temp,
+      wind: day.wind.speed
+    };
+  });
+
+  return data;
 }

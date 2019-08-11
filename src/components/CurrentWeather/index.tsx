@@ -35,7 +35,6 @@ class CurrentWeather extends React.Component<Props, IState> {
   }
   render() {
     const { currentWeather } = this.props;
-    console.log("state.currentWeather: ", currentWeather);
     if (!currentWeather || currentWeather.error || !currentWeather.weather) {
       return (
         // TODO - show a more customized error message based on the actual error

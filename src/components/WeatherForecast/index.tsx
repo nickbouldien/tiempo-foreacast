@@ -2,8 +2,12 @@ import * as React from "react";
 import { StyleSheet, Text } from "react-native";
 import { connect } from "react-redux";
 import { ThunkDispatch } from "redux-thunk";
+import ForecastCard from "./ForecastCard";
 import { fetchWeatherForecast } from "../../actions/actionCreators";
-import { IWeatherForecastState } from "../../reducers/weatherForecast";
+import {
+  IWeatherForecastState,
+  IWeatherForecast
+} from "../../reducers/weatherForecast";
 import { AppState } from "../../rootReducer";
 
 const styles = StyleSheet.create({
@@ -29,16 +33,26 @@ interface IDispatchProps {
 type Props = IStateProps & IOwnProps & IDispatchProps;
 
 class WeatherForecast extends React.Component<Props, IState> {
-  state = {};
+  state: IState = {};
   componentDidMount() {
     this.props.fetchWeatherForecast("zip=38018");
   }
   render() {
     const { weatherForecast } = this.props;
+    if (weatherForecast.loading) {
+      return <Text>loading forecast...</Text>;
+    }
+    if (weatherForecast.error || !weatherForecast.weather) {
+      return <Text>error retrieving the weather forecast</Text>;
+    }
     return (
       <>
+        {/* TODO - add the # of days for the forecast ie "{props.forecastDays} Day Weather Forecast" */}
         <Text style={styles.welcome}>Weather Forecast</Text>
-        <pre>{JSON.stringify(weatherForecast)}</pre>
+        {/* <pre>{JSON.stringify(weatherForecast)}</pre> */}
+        {weatherForecast.weather.map((day: IWeatherForecast, ind) => (
+          <ForecastCard key={`${day.dayName}${ind}`} forecast={day} />
+        ))}
       </>
     );
   }
