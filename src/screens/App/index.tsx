@@ -1,7 +1,7 @@
 import * as React from "react";
 import { SafeAreaView, StyleSheet, View } from "react-native";
 import { Provider } from "react-redux";
-import { createStore, applyMiddleware } from "redux";
+import { compose, createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { rootReducer } from "../../rootReducer";
 import {
@@ -12,7 +12,19 @@ import {
   Welcome
 } from "../../components";
 
-const store = createStore(rootReducer, applyMiddleware(thunk));
+const middlewares = [thunk];
+
+if (process.env.NODE_ENV === `development`) {
+  console.info("app starting in dev mode");
+  const { logger } = require(`redux-logger`);
+
+  middlewares.push(logger);
+}
+
+// const store = createStore(rootReducer, applyMiddleware(thunk));
+const store = compose(applyMiddleware(...middlewares))(createStore)(
+  rootReducer
+);
 
 const styles = StyleSheet.create({
   container: {

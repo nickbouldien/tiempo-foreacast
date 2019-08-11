@@ -20,12 +20,12 @@ export type LocationAction =
   | { type: "CHANGE_ZIPCODE"; payload: string }
   | { type: "TOGGLE_USE_ZIPCODE"; payload: boolean }
   | { type: "LOCATION_ERROR"; payload: any }
-  | { type: "TOGGLE_USE_LOCATION"; payload: any };
+  | { type: "TOGGLE_USE_LOCATION"; payload: boolean };
 
 const initialState: ILocationState = {
   city: "memphis",
   coordinates: null,
-  useLocation: false,
+  useLocation: true,
   error: null,
   loading: false,
   zipCode: "",

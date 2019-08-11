@@ -43,5 +43,6 @@ yarn test
 yarn build
 ```
 ### TODOs:
+- fix the app name (change to "tiempo-forecast" from "example")
 - use constants for action types
 - more complete/stricter typing

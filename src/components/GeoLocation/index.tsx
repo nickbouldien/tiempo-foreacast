@@ -42,9 +42,14 @@ class GeoLocation extends React.Component<Props, IState> {
   componentDidMount() {
     // get geoLocation if the user wants to allow/use it
     if (this.props.location.useLocation) {
+      console.log(
+        "this.props.location.useLocation",
+        this.props.location.useLocation
+      );
       // getGeolocation
       getCurrentPosition()
         .then((position: any) => {
+          console.log("position ", position);
           // TODO - fix the any
           const coordinates = {
             lat: position.coords.latitude,
@@ -59,10 +64,10 @@ class GeoLocation extends React.Component<Props, IState> {
     }
   }
 
-  componentDidUpdate(prevProps: Props) {
-    if (prevProps.location.useLocation !== this.props.location.useLocation) {
-    }
-  }
+  // componentDidUpdate(prevProps: Props) {
+  //   if (prevProps.location.useLocation !== this.props.location.useLocation) {
+  //   }
+  // }
 
   useGeoLocation = () => {
     // get geoLocation since the user wants to allow/use it

@@ -22,10 +22,10 @@ const styles = StyleSheet.create({
 
 interface IState {
   searchValue: string;
-  useLocation: boolean;
+  // useLocation: boolean;
   useMetric: boolean;
-  useZip: boolean;
-  zipCode: number | string;
+  // useZip: boolean;
+  zipCode: string;
 }
 
 interface IOwnProps {}
@@ -45,11 +45,11 @@ interface IDispatchProps {
 type Props = IStateProps & IOwnProps & IDispatchProps;
 
 class Location extends React.Component<Props, IState> {
-  state = {
+  state: IState = {
     searchValue: "memphis",
-    useLocation: false,
+    // useLocation: false,
     useMetric: false,
-    useZip: false,
+    // useZip: false,
     zipCode: "37996"
   };
 
@@ -57,25 +57,23 @@ class Location extends React.Component<Props, IState> {
     // TODO - validate and handle errors
     let searchString = `q=${this.state.searchValue}`;
 
-    if (this.state.useLocation) {
+    if (this.props.location.useLocation) {
       // TODO - implement using browser location
       searchString = "lat=35&lon=139";
-    } else if (this.state.useZip) {
+    } else if (this.props.location.useZipCode) {
       searchString = `zip=${this.state.zipCode}`;
     }
     this.props.fetchWeather(searchString);
   };
 
   updateSearchMethod = () => {
-    this.setState({
-      useZip: !this.state.useZip
-    });
+    const useZip = this.props.location.useZipCode;
+    this.props.toggleUseZipCode(!useZip);
   };
 
   updateUseLocation = () => {
-    this.setState({
-      useLocation: !this.state.useLocation
-    });
+    const useGeolocation = this.props.location.useLocation;
+    this.props.toggleUseLocation(!useGeolocation);
   };
 
   toggleUnits = () => {
@@ -89,17 +87,21 @@ class Location extends React.Component<Props, IState> {
     return (
       <>
         <Text style={styles.heading}>location section</Text>
-        <Text>{this.state.useZip ? "use zipcode" : "use city"}</Text>
+        <Text>
+          {this.props.location.useZipCode ? "use zipcode" : "use city"}
+        </Text>
         <Switch
           onValueChange={this.updateSearchMethod}
-          value={this.state.useZip}
+          value={this.props.location.useZipCode}
         />
         {/* TOOD - using location is more invovled, so move this to another component */}
-        {/* <Text>{this.state.useLocation ? "use location" : "use search"}</Text>
+        <Text>
+          {this.props.location.useLocation ? "use location" : "use search"}
+        </Text>
         <Switch
           onValueChange={this.updateUseLocation}
-          value={this.state.useLocation}
-        /> */}
+          value={this.props.location.useLocation}
+        />
         {/* <Text>{this.state.useMetric ? "°C" : "°F"}</Text>
         <Switch onValueChange={this.toggleUnits} value={this.state.useMetric} /> */}
 
@@ -112,7 +114,7 @@ class Location extends React.Component<Props, IState> {
           onChangeText={text => this.setState({ searchValue: text })}
           value={this.state.searchValue}
         />
-        {/* <Text>zipcode</Text> */}
+        <Text>zipcode</Text>
         <TextInput
           editable={true}
           maxLength={9}
