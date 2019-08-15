@@ -71,14 +71,10 @@ export const fetchWeather = (search: string) => (
     Config.app.apiKey
   }`;
 
-  console.log("called with : ", search);
-  console.log("url : ", url);
-
   dispatch({ type: "FETCH_WEATHER" });
   axios
     .get(url)
     .then(response => {
-      console.log("response: ", response.data);
       dispatch({ type: "FETCH_WEATHER_FINISHED" });
       if (response && response.data) {
         // form the weather object
@@ -119,14 +115,10 @@ export const fetchWeatherForecast = (search: string) => (
 
   const url = `${apiUrl}/forecast?${searchString}`;
 
-  console.log("called fetchWeatherForecast with : ", search);
-  console.log("url : ", url);
-
   dispatch({ type: "FETCH_WEATHER_FORECAST" });
   axios
     .get(url)
     .then(response => {
-      console.log("response: ", response.data);
       dispatch({ type: "FETCH_WEATHER_FORECAST_FINISHED" });
       if (response && response.data) {
         // form the weather object
@@ -174,17 +166,14 @@ function formatForecastData(weatherData: any): IWeatherForecast[] {
   // the don't actually have the percent chance of precipition by day
   // https://openweathermap.desk.com/customer/portal/questions/17457140-forecast-precipitation
 
-  let todayIndex = new Date().getDate();
-  console.log("todayIndex ", todayIndex);
+  // let todayIndex = new Date().getDate();
 
   let data = weatherData.list.map((day: any /*, ind: number */) => {
     // let dayInd = todayIndex + ind;
-    // console.log("dayInd - ", dayInd);
 
     // if (dayInd > 6) {
     //   dayInd = dayInd % 7;
     // }
-    // console.log("dayInd ", dayInd);
 
     const dayString = ""; // dayOfWeekAsString(dayInd);
     return {

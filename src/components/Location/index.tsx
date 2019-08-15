@@ -32,6 +32,15 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     padding: 8,
     paddingBottom: 12
+  },
+  input: {
+    height: 30,
+    borderColor: "black",
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingLeft: 8,
+    marginBottom: 8,
+    marginTop: 4
   }
 });
 
@@ -115,13 +124,14 @@ class Location extends React.Component<Props, IState> {
         <Switch onValueChange={this.toggleUnits} value={this.state.useMetric} /> */}
 
         {/* TODO - best way to make labels in react-native??? */}
-        {/* <Text>search value</Text> */}
+        <Text>city</Text>
         <TextInput
           editable={true}
           maxLength={30}
           keyboardType={"default"}
           onChangeText={text => this.setState({ searchValue: text })}
           value={this.state.searchValue}
+          style={styles.input}
         />
         <Text>zipcode</Text>
         <TextInput
@@ -130,6 +140,7 @@ class Location extends React.Component<Props, IState> {
           keyboardType={"number-pad"}
           onChangeText={num => this.setState({ zipCode: num })}
           value={this.state.zipCode}
+          style={styles.input}
         />
         <Button onPress={this.refetchWeather} title="Refetch Weather" />
       </View>

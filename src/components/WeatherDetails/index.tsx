@@ -1,7 +1,7 @@
 import * as React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { useSelector } from "react-redux";
-import { AppState } from "../../rootReducer";
+// import { useSelector } from "react-redux";
+// import { AppState } from "../../rootReducer";
 
 const styles = StyleSheet.create({
   details: {
@@ -18,11 +18,9 @@ const styles = StyleSheet.create({
 // }
 
 const WeatherDetails = (/*props: IProps*/) => {
-  const weatherDetails = useSelector(
-    (state: AppState) => state.currentWeather.weather
-  );
-  console.log("weatherDetails: ", weatherDetails);
-
+  // const weatherDetails = useSelector(
+  //   (state: AppState) => state.currentWeather.weather
+  // );
   return (
     <View>
       <Text style={styles.details}>Weather details</Text>
