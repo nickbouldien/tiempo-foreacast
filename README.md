@@ -43,6 +43,7 @@ yarn test
 yarn build
 ```
 ### TODOs:
+- fix the behavior switching between using location and the user's search (city/zipcode)
 - fix the app name (change to "tiempo-forecast" from "example")
 - use constants for action types
 - more complete/stricter typing

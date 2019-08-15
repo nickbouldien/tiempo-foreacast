@@ -98,50 +98,67 @@ class Location extends React.Component<Props, IState> {
     this.props.toggleUseLocation(!useGeolocation);
   };
 
-  toggleUnits = () => {
-    this.setState({
-      useMetric: !this.state.useMetric
-    });
-  };
+  // toggleUnits = () => {
+  //   this.setState({
+  //     useMetric: !this.state.useMetric
+  //   });
+  // };
 
   render() {
     const { location } = this.props;
     return (
       <View style={styles.locationSection}>
         {location.city && <Text style={styles.heading}>{location.city}</Text>}
-        <Text>{location.useZipCode ? "use zipcode" : "use city"}</Text>
-        <Switch
-          onValueChange={this.updateSearchMethod}
-          value={location.useZipCode}
-        />
+
         {/* TOOD - using location is more invovled, so move this to another component */}
         <Text>{location.useLocation ? "use location" : "use search"}</Text>
         <Switch
           onValueChange={this.updateUseLocation}
           value={location.useLocation}
+          style={{ marginBottom: 8 }}
         />
-        {/* <Text>{this.state.useMetric ? "°C" : "°F"}</Text>
-        <Switch onValueChange={this.toggleUnits} value={this.state.useMetric} /> */}
 
-        {/* TODO - best way to make labels in react-native??? */}
-        <Text>city</Text>
-        <TextInput
-          editable={true}
-          maxLength={30}
-          keyboardType={"default"}
-          onChangeText={text => this.setState({ searchValue: text })}
-          value={this.state.searchValue}
-          style={styles.input}
-        />
-        <Text>zipcode</Text>
-        <TextInput
-          editable={true}
-          maxLength={9}
-          keyboardType={"number-pad"}
-          onChangeText={num => this.setState({ zipCode: num })}
-          value={this.state.zipCode}
-          style={styles.input}
-        />
+        {!location.useLocation && (
+          <>
+            <Text>{location.useZipCode ? "use zipcode" : "use city"}</Text>
+            <Switch
+              onValueChange={this.updateSearchMethod}
+              value={location.useZipCode}
+              style={{ marginBottom: 8 }}
+            />
+
+            {/* <Text>{this.state.useMetric ? "°C" : "°F"}</Text>
+          <Switch onValueChange={this.toggleUnits} value={this.state.useMetric} /> */}
+
+            {/* TODO - best way to make labels in react-native??? */}
+            {location.useZipCode ? (
+              <>
+                <Text>zipcode</Text>
+                <TextInput
+                  editable={true}
+                  maxLength={9}
+                  keyboardType={"number-pad"}
+                  onChangeText={num => this.setState({ zipCode: num })}
+                  value={this.state.zipCode}
+                  style={styles.input}
+                />
+              </>
+            ) : (
+              <>
+                <Text>city</Text>
+                <TextInput
+                  editable={true}
+                  maxLength={30}
+                  keyboardType={"default"}
+                  onChangeText={text => this.setState({ searchValue: text })}
+                  value={this.state.searchValue}
+                  style={styles.input}
+                />
+              </>
+            )}
+          </>
+        )}
+
         <Button onPress={this.refetchWeather} title="Refetch Weather" />
       </View>
     );
