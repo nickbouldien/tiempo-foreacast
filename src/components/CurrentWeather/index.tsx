@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { connect } from "react-redux";
 import { ThunkDispatch } from "redux-thunk";
 import { fetchWeather } from "../../actions/actionCreators";
@@ -8,9 +8,25 @@ import { AppState } from "../../rootReducer";
 
 const styles = StyleSheet.create({
   currentWeather: {
+    marginBottom: 16,
+    textAlign: "center",
+    backgroundColor: "#e8f4fd",
+    borderRadius: 18
+  },
+  title: {
     fontSize: 20,
-    margin: 10,
-    textAlign: "center"
+    paddingBottom: 8,
+    paddingTop: 8
+  },
+  temperature: {
+    fontSize: 26,
+    paddingBottom: 8,
+    paddingTop: 8
+  },
+  details: {
+    fontSize: 14,
+    paddingBottom: 4,
+    paddingTop: 4
   }
 });
 
@@ -29,7 +45,7 @@ interface IDispatchProps {
 type Props = IStateProps & IOwnProps & IDispatchProps;
 
 class CurrentWeather extends React.Component<Props, IState> {
-  state = {};
+  state: IState = {};
   componentDidMount() {
     this.props.fetchWeather("q=memphis");
   }
@@ -48,18 +64,18 @@ class CurrentWeather extends React.Component<Props, IState> {
       return <Text>loading...</Text>;
     }
     return (
-      <>
-        <Text style={styles.currentWeather}>Current weather</Text>
-        {/* <Button
-          onPress={() => this.props.fetchWeather("knoxville")}
-          title="Refetch weather"
-        /> */}
-        <Text>city: {currentWeather.weather.city}</Text>
-        <Text>description: {currentWeather.weather.description}</Text>
-        <Text>temperature: {currentWeather.weather.temperature}</Text>
-        <Text>wind: {currentWeather.weather.wind}</Text>
-        <Text>visibility: {currentWeather.weather.visibility}</Text>
-      </>
+      <View style={styles.currentWeather}>
+        <Text style={styles.title}>Current weather</Text>
+        {/* <Text>{currentWeather.weather.city}</Text> */}
+        <Text style={styles.temperature}>
+          {currentWeather.weather.temperature}&deg;
+        </Text>
+        <Text style={styles.details}>{currentWeather.weather.description}</Text>
+        <Text style={styles.details}>
+          wind: {currentWeather.weather.wind} mph
+        </Text>
+        {/* <Text>visibility: {currentWeather.weather.visibility}</Text> */}
+      </View>
     );
   }
 }

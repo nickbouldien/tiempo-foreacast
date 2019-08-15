@@ -53,11 +53,23 @@ export function locationError(error: Error) {
 
 /* weather actions */
 // TODO - refactor the fetch weather functions
-export const fetchWeather = (search: string) => (dispatch: Dispatch) => {
-  const units = true ? "imperial" : "metric"; // TODO - implement
-  const searchString = `${search}&units=${units}&appid=${Config.app.apiKey}`;
+export const fetchWeather = (search: string) => (
+  dispatch: Dispatch,
+  getState: () => AppState
+) => {
+  const { location } = getState();
 
-  const url = `${apiUrl}/weather?${searchString}`;
+  const units = true ? "imperial" : "metric"; // TODO - implement
+  let searchString = `${search}`;
+
+  if (location.useLocation && location.coordinates) {
+    const coords = location.coordinates;
+    searchString = `lat=${coords.lat}&lon=${coords.lng}`;
+  }
+
+  const url = `${apiUrl}/weather?${searchString}&units=${units}&appid=${
+    Config.app.apiKey
+  }`;
 
   console.log("called with : ", search);
   console.log("url : ", url);
@@ -161,10 +173,22 @@ function formatData(weatherData: any): ICurrentWeather {
 function formatForecastData(weatherData: any): IWeatherForecast[] {
   // the don't actually have the percent chance of precipition by day
   // https://openweathermap.desk.com/customer/portal/questions/17457140-forecast-precipitation
-  let data = weatherData.list.map((day: any) => {
-    // TODO - format the data
+
+  let todayIndex = new Date().getDate();
+  console.log("todayIndex ", todayIndex);
+
+  let data = weatherData.list.map((day: any /*, ind: number */) => {
+    // let dayInd = todayIndex + ind;
+    // console.log("dayInd - ", dayInd);
+
+    // if (dayInd > 6) {
+    //   dayInd = dayInd % 7;
+    // }
+    // console.log("dayInd ", dayInd);
+
+    const dayString = ""; // dayOfWeekAsString(dayInd);
     return {
-      dayName: "", // TODO - day.dayName,
+      dayName: dayString,
       highTemp: day.main.temp_max,
       humidity: day.main.humidity,
       lowTemp: day.main.temp_min,

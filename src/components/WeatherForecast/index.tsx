@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { connect } from "react-redux";
 import { ThunkDispatch } from "redux-thunk";
 import ForecastCard from "./ForecastCard";
@@ -15,6 +15,13 @@ const styles = StyleSheet.create({
     fontSize: 20,
     margin: 10,
     textAlign: "center"
+  },
+  forecastSection: {
+    flexDirection: "row"
+  },
+  weatherForecast: {
+    backgroundColor: "#e8f4fd",
+    borderRadius: 18
   }
 });
 
@@ -46,14 +53,16 @@ class WeatherForecast extends React.Component<Props, IState> {
       return <Text>error retrieving the weather forecast</Text>;
     }
     return (
-      <>
+      <View style={styles.weatherForecast}>
         {/* TODO - add the # of days for the forecast ie "{props.forecastDays} Day Weather Forecast" */}
-        <Text style={styles.welcome}>Weather Forecast</Text>
+        <Text style={styles.welcome}>5 Day Forecast</Text>
         {/* <pre>{JSON.stringify(weatherForecast)}</pre> */}
-        {weatherForecast.weather.map((day: IWeatherForecast, ind) => (
-          <ForecastCard key={`${day.dayName}${ind}`} forecast={day} />
-        ))}
-      </>
+        <View style={styles.forecastSection}>
+          {weatherForecast.weather.map((day: IWeatherForecast, ind) => (
+            <ForecastCard key={`${day.dayName}${ind}`} forecast={day} />
+          ))}
+        </View>
+      </View>
     );
   }
 }

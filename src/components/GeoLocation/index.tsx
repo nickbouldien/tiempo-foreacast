@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Text } from "react-native";
 import { connect } from "react-redux";
 import { ThunkDispatch } from "redux-thunk";
 import {
@@ -56,6 +55,9 @@ class GeoLocation extends React.Component<Props, IState> {
             lng: position.coords.longitude
           };
           this.props.updateCoordinates(coordinates);
+          // fetch current weather and weather forecast
+
+          // this.props.fetchWeather(searchString);
         })
         .catch(() => {
           const err = new Error("Error retreiving your geolocation.");
@@ -74,7 +76,7 @@ class GeoLocation extends React.Component<Props, IState> {
   };
 
   render() {
-    return <Text>GeoLocation</Text>;
+    return null;
   }
 }
 

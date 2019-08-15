@@ -1,5 +1,12 @@
 import * as React from "react";
-import { Button, StyleSheet, Text, TextInput, Switch } from "react-native";
+import {
+  Button,
+  StyleSheet,
+  Text,
+  TextInput,
+  Switch,
+  View
+} from "react-native";
 import { connect } from "react-redux";
 import { ThunkDispatch } from "redux-thunk";
 import {
@@ -14,17 +21,23 @@ import { ILocationState } from "../../reducers/location";
 
 const styles = StyleSheet.create({
   heading: {
-    fontSize: 14,
+    fontSize: 20,
+    textTransform: "capitalize",
     margin: 10,
     textAlign: "center"
+  },
+  locationSection: {
+    backgroundColor: "#e8f4fd",
+    borderRadius: 18,
+    marginBottom: 16,
+    padding: 8,
+    paddingBottom: 12
   }
 });
 
 interface IState {
   searchValue: string;
-  // useLocation: boolean;
   useMetric: boolean;
-  // useZip: boolean;
   zipCode: string;
 }
 
@@ -47,9 +60,7 @@ type Props = IStateProps & IOwnProps & IDispatchProps;
 class Location extends React.Component<Props, IState> {
   state: IState = {
     searchValue: "memphis",
-    // useLocation: false,
     useMetric: false,
-    // useZip: false,
     zipCode: "37996"
   };
 
@@ -57,9 +68,11 @@ class Location extends React.Component<Props, IState> {
     // TODO - validate and handle errors
     let searchString = `q=${this.state.searchValue}`;
 
-    if (this.props.location.useLocation) {
+    const coords = this.props.location.coordinates;
+
+    if (this.props.location.useLocation && coords) {
       // TODO - implement using browser location
-      searchString = "lat=35&lon=139";
+      searchString = `lat=${coords.lat}&lon=${coords.lng}`;
     } else if (this.props.location.useZipCode) {
       searchString = `zip=${this.state.zipCode}`;
     }
@@ -83,24 +96,20 @@ class Location extends React.Component<Props, IState> {
   };
 
   render() {
-    // const { location } = this.props;
+    const { location } = this.props;
     return (
-      <>
-        <Text style={styles.heading}>location section</Text>
-        <Text>
-          {this.props.location.useZipCode ? "use zipcode" : "use city"}
-        </Text>
+      <View style={styles.locationSection}>
+        {location.city && <Text style={styles.heading}>{location.city}</Text>}
+        <Text>{location.useZipCode ? "use zipcode" : "use city"}</Text>
         <Switch
           onValueChange={this.updateSearchMethod}
-          value={this.props.location.useZipCode}
+          value={location.useZipCode}
         />
         {/* TOOD - using location is more invovled, so move this to another component */}
-        <Text>
-          {this.props.location.useLocation ? "use location" : "use search"}
-        </Text>
+        <Text>{location.useLocation ? "use location" : "use search"}</Text>
         <Switch
           onValueChange={this.updateUseLocation}
-          value={this.props.location.useLocation}
+          value={location.useLocation}
         />
         {/* <Text>{this.state.useMetric ? "°C" : "°F"}</Text>
         <Switch onValueChange={this.toggleUnits} value={this.state.useMetric} /> */}
@@ -123,7 +132,7 @@ class Location extends React.Component<Props, IState> {
           value={this.state.zipCode}
         />
         <Button onPress={this.refetchWeather} title="Refetch Weather" />
-      </>
+      </View>
     );
   }
 }

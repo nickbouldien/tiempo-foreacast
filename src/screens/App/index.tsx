@@ -7,9 +7,10 @@ import { rootReducer } from "../../rootReducer";
 import {
   CurrentWeather,
   GeoLocation,
+  Header,
   Location,
-  WeatherForecast,
-  Welcome
+  // WeatherDetails,
+  WeatherForecast
 } from "../../components";
 
 const middlewares = [thunk];
@@ -21,7 +22,6 @@ if (process.env.NODE_ENV === `development`) {
   middlewares.push(logger);
 }
 
-// const store = createStore(rootReducer, applyMiddleware(thunk));
 const store = compose(applyMiddleware(...middlewares))(createStore)(
   rootReducer
 );
@@ -35,17 +35,17 @@ const styles = StyleSheet.create({
   }
 });
 
-export const App = () => {
+export const App: React.FC = () => {
   return (
     <Provider store={store}>
       <SafeAreaView style={styles.container}>
         <View style={{ flex: 1 }}>
-          <Welcome name="Human" enthusiasmLevel={1} />
-
+          <Header />
           <Location />
           <GeoLocation />
           <CurrentWeather />
           <WeatherForecast />
+          {/* <WeatherDetails /> */}
         </View>
       </SafeAreaView>
     </Provider>
