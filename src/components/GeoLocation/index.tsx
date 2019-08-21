@@ -4,7 +4,10 @@ import { ThunkDispatch } from "redux-thunk";
 import {
   fetchWeather,
   updateCoordinates,
-  locationError
+  locationError,
+  setLoading,
+  toggleUseLocation,
+  fetchWeatherForecast
 } from "../../actions/actionCreators";
 import { ILocationState, ICoordinates } from "../../reducers/location";
 import { AppState } from "../../rootReducer";
@@ -29,51 +32,60 @@ interface IStateProps {
 }
 
 interface IDispatchProps {
-  fetchWeather: (search: string) => void;
+  fetchWeather: (search?: string) => void;
+  fetchWeatherForecast: (search?: string) => void;
   updateCoordinates: (coordinates: ICoordinates) => void;
   locationError: (error: Error) => void;
+  setLoading: (loading: boolean) => void;
+  toggleUseLocation: (useLocation: boolean) => void;
 }
 
 type Props = IStateProps & IOwnProps & IDispatchProps;
 
 class GeoLocation extends React.Component<Props, IState> {
   state: IState = {};
-  componentDidMount() {
-    // get geoLocation if the user wants to allow/use it
-    if (this.props.location.useLocation) {
-      console.log(
-        "this.props.location.useLocation",
-        this.props.location.useLocation
-      );
-      // getGeolocation
-      getCurrentPosition()
-        .then((position: any) => {
-          console.log("position ", position);
-          // TODO - fix the any
-          const coordinates = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-          };
-          this.props.updateCoordinates(coordinates);
-          // fetch current weather and weather forecast
 
-          // this.props.fetchWeather(searchString);
-        })
-        .catch(() => {
-          const err = new Error("Error retreiving your geolocation.");
-          this.props.locationError(err);
-        });
+  async componentDidMount() {
+    // get geoLocation if the user wants to allow/use it.
+    // if there is an error, fall back to using the city/zipcode
+    this.props.setLoading(true);
+    try {
+      // TODO - fix the any
+      const position: any = await getCurrentPosition();
+      this.props.setLoading(false);
+
+      const coordinates = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+      this.props.updateCoordinates(coordinates);
+      this.props.toggleUseLocation(true);
+    } catch (e) {
+      console.error("e ", e);
+      const err = new Error("Error retrieving your geolocation.");
+      this.props.setLoading(false);
+      this.props.locationError(err);
+      this.props.toggleUseLocation(false);
     }
+    this.props.fetchWeather();
+
+    this.props.fetchWeatherForecast();
   }
 
-  // componentDidUpdate(prevProps: Props) {
-  //   if (prevProps.location.useLocation !== this.props.location.useLocation) {
-  //   }
-  // }
+  componentDidUpdate(prevProps: Props) {
+    const prevPropsLocation = prevProps.location;
+    const currLocation = this.props.location;
 
-  useGeoLocation = () => {
-    // get geoLocation since the user wants to allow/use it
-  };
+    // TODO - need to do deep check on coordinates
+    if (
+      prevPropsLocation.useLocation !== currLocation.useLocation ||
+      prevPropsLocation.coordinates !== currLocation.coordinates
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   render() {
     return null;
@@ -87,10 +99,15 @@ const mapStateToProps = (state: AppState) => ({
 const mapDispatchToProps = (
   dispatch: ThunkDispatch<{}, {}, any>
 ): IDispatchProps => ({
-  fetchWeather: (search: string) => dispatch(fetchWeather(search)),
+  fetchWeather: (search?: string) => dispatch(fetchWeather(search)),
+  fetchWeatherForecast: (search?: string) =>
+    dispatch(fetchWeatherForecast(search)),
   updateCoordinates: (coordinates: ICoordinates) =>
     dispatch(updateCoordinates(coordinates)),
-  locationError: (err: Error) => dispatch(locationError(err))
+  locationError: (err: Error) => dispatch(locationError(err)),
+  setLoading: (loading: boolean) => dispatch(setLoading(loading)),
+  toggleUseLocation: (useLocation: boolean) =>
+    dispatch(toggleUseLocation(useLocation))
 });
 
 export default connect(

@@ -4,14 +4,16 @@ import { connect } from "react-redux";
 import { ThunkDispatch } from "redux-thunk";
 import { fetchWeather } from "../../actions/actionCreators";
 import { ICurrentWeatherState } from "../../reducers/currentWeather";
+import { ILocationState } from "../../reducers/location";
 import { AppState } from "../../rootReducer";
 
 const styles = StyleSheet.create({
   currentWeather: {
-    marginBottom: 16,
-    textAlign: "center",
+    alignItems: "center",
     backgroundColor: "#e8f4fd",
-    borderRadius: 18
+    borderRadius: 18,
+    flex: 1,
+    marginBottom: 16
   },
   title: {
     fontSize: 20,
@@ -36,6 +38,7 @@ interface IOwnProps {}
 
 interface IStateProps {
   currentWeather: ICurrentWeatherState;
+  location: ILocationState;
 }
 
 interface IDispatchProps {
@@ -46,11 +49,9 @@ type Props = IStateProps & IOwnProps & IDispatchProps;
 
 class CurrentWeather extends React.Component<Props, IState> {
   state: IState = {};
-  componentDidMount() {
-    this.props.fetchWeather("q=memphis");
-  }
+
   render() {
-    const { currentWeather } = this.props;
+    const { currentWeather, location } = this.props;
     if (!currentWeather || currentWeather.error || !currentWeather.weather) {
       return (
         // TODO - show a more customized error message based on the actual error
@@ -59,7 +60,7 @@ class CurrentWeather extends React.Component<Props, IState> {
         </Text>
       );
     }
-    if (currentWeather.loading) {
+    if (currentWeather.loading || location.loading) {
       // TODO - add a spinner component
       return <Text>loading...</Text>;
     }
@@ -74,14 +75,14 @@ class CurrentWeather extends React.Component<Props, IState> {
         <Text style={styles.details}>
           wind: {currentWeather.weather.wind} mph
         </Text>
-        {/* <Text>visibility: {currentWeather.weather.visibility}</Text> */}
       </View>
     );
   }
 }
 
 const mapStateToProps = (state: AppState) => ({
-  currentWeather: state.currentWeather
+  currentWeather: state.currentWeather,
+  location: state.location
 });
 
 const mapDispatchToProps = (

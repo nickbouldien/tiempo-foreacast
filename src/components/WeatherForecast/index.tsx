@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { ThunkDispatch } from "redux-thunk";
 import ForecastCard from "./ForecastCard";
 import { fetchWeatherForecast } from "../../actions/actionCreators";
+import { ILocationState } from "../../reducers/location";
 import {
   IWeatherForecastState,
   IWeatherForecast
@@ -30,6 +31,7 @@ interface IState {}
 interface IOwnProps {}
 
 interface IStateProps {
+  location?: ILocationState;
   weatherForecast: IWeatherForecastState;
 }
 
@@ -41,12 +43,10 @@ type Props = IStateProps & IOwnProps & IDispatchProps;
 
 class WeatherForecast extends React.Component<Props, IState> {
   state: IState = {};
-  componentDidMount() {
-    this.props.fetchWeatherForecast("zip=38018");
-  }
+
   render() {
-    const { weatherForecast } = this.props;
-    if (weatherForecast.loading) {
+    const { location, weatherForecast } = this.props;
+    if (weatherForecast.loading || (location && location.loading)) {
       return <Text>loading forecast...</Text>;
     }
     if (weatherForecast.error || !weatherForecast.weather) {
@@ -68,6 +68,7 @@ class WeatherForecast extends React.Component<Props, IState> {
 }
 
 const mapStateToProps = (state: AppState) => ({
+  localation: state.location,
   weatherForecast: state.weatherForecast
 });
 

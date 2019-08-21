@@ -9,8 +9,8 @@ const styles = StyleSheet.create({
   },
   card: {
     paddingLeft: 8,
-    paddingRight: 8,
-    textAlign: "center"
+    paddingRight: 8
+    // textAlign: "center"
   }
 });
 

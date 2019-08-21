@@ -14,7 +14,8 @@ import {
   changeLocation,
   changeZipCode,
   toggleUseZipCode,
-  toggleUseLocation
+  toggleUseLocation,
+  fetchWeatherForecast
 } from "../../actions/actionCreators";
 import { AppState } from "../../rootReducer";
 import { ILocationState } from "../../reducers/location";
@@ -57,7 +58,9 @@ interface IStateProps {
 }
 
 interface IDispatchProps {
-  fetchWeather: (search: string) => void;
+  fetchWeather: (search?: string) => void;
+  fetchWeatherForecast: (search: string) => void;
+
   changeLocation: (city: string) => void;
   changeZipCode: (zipCode: string | number) => void;
   toggleUseZipCode: (useZipCode: boolean) => void;
@@ -75,17 +78,21 @@ class Location extends React.Component<Props, IState> {
 
   refetchWeather = () => {
     // TODO - validate and handle errors
+    const { location } = this.props;
     let searchString = `q=${this.state.searchValue}`;
 
-    const coords = this.props.location.coordinates;
+    const coords = location.coordinates;
 
-    if (this.props.location.useLocation && coords) {
+    if (location.useLocation && coords) {
       // TODO - implement using browser location
       searchString = `lat=${coords.lat}&lon=${coords.lng}`;
-    } else if (this.props.location.useZipCode) {
+    } else if (location.useZipCode) {
       searchString = `zip=${this.state.zipCode}`;
     }
+
     this.props.fetchWeather(searchString);
+
+    // this.props.fetchWeather(searchString);
   };
 
   updateSearchMethod = () => {
@@ -106,6 +113,7 @@ class Location extends React.Component<Props, IState> {
 
   render() {
     const { location } = this.props;
+
     return (
       <View style={styles.locationSection}>
         {location.city && <Text style={styles.heading}>{location.city}</Text>}
@@ -172,7 +180,9 @@ const mapStateToProps = (state: AppState) => ({
 const mapDispatchToProps = (
   dispatch: ThunkDispatch<{}, {}, any>
 ): IDispatchProps => ({
-  fetchWeather: (search: string) => dispatch(fetchWeather(search)),
+  fetchWeather: (search?: string) => dispatch(fetchWeather(search)),
+  fetchWeatherForecast: (search: string) =>
+    dispatch(fetchWeatherForecast(search)),
   changeLocation: (city: string) => dispatch(changeLocation(city)),
   changeZipCode: (zipCode: string | number) => dispatch(changeZipCode(zipCode)),
   toggleUseZipCode: (useZipCode: boolean) =>

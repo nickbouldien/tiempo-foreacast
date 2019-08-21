@@ -54,4 +54,4 @@ yarn build
 - extract the redux code out of the component files
 - add refresh capability - https://facebook.github.io/react-native/docs/refreshcontrol.html
 - add icons for different weather types
-  
+- get it working for all platforms (web, iOS, android)

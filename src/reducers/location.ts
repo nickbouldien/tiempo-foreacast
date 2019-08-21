@@ -18,9 +18,10 @@ export type LocationAction =
   | { type: "CHANGE_CITY"; payload: string }
   | { type: "CHANGE_COORDINATES"; payload: ICoordinates }
   | { type: "CHANGE_ZIPCODE"; payload: string }
-  | { type: "TOGGLE_USE_ZIPCODE"; payload: boolean }
   | { type: "LOCATION_ERROR"; payload: any }
-  | { type: "TOGGLE_USE_LOCATION"; payload: boolean };
+  | { type: "SET_LOADING"; payload: boolean }
+  | { type: "TOGGLE_USE_LOCATION"; payload: boolean }
+  | { type: "TOGGLE_USE_ZIPCODE"; payload: boolean };
 
 const initialState: ILocationState = {
   city: "memphis",
@@ -51,6 +52,11 @@ function location(
       return {
         ...state,
         useLocation: action.payload
+      };
+    case "SET_LOADING":
+      return {
+        ...state,
+        loading: action.payload
       };
     case "TOGGLE_USE_ZIPCODE":
       return {

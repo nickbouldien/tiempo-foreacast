@@ -51,9 +51,16 @@ export function locationError(error: Error) {
   };
 }
 
+export function setLoading(loading: boolean) {
+  return {
+    type: "SET_LOADING",
+    payload: loading
+  };
+}
+
 /* weather actions */
 // TODO - refactor the fetch weather functions
-export const fetchWeather = (search: string) => (
+export const fetchWeather = (search?: string) => (
   dispatch: Dispatch,
   getState: () => AppState
 ) => {
@@ -79,6 +86,12 @@ export const fetchWeather = (search: string) => (
       if (response && response.data) {
         // form the weather object
         const formattedData = formatData(response.data);
+
+        dispatch({
+          type: "CHANGE_CITY",
+          payload: formattedData.city
+        });
+
         dispatch({
           type: "UPDATE_WEATHER",
           payload: formattedData
@@ -101,19 +114,25 @@ export const fetchWeather = (search: string) => (
 
 // TODO - make the above fetchWeather function more reusable
 // 5 day forecast:  `http://api.openweathermap.org/data/2.5/forecast/daily?q=${city}&mode=json&cnt=${count}&units=${units}&apikey=${API_KEY}`;
-export const fetchWeatherForecast = (search: string) => (
+export const fetchWeatherForecast = (search?: string) => (
   dispatch: Dispatch,
   getState: () => AppState
 ) => {
   const { location } = getState();
 
-  const count = 5; // TODO - make this a function param with 5 as the default
   const units = true ? "imperial" : "metric"; // TODO - implement
-  const searchString = `${search}&units=${units}&cnt=${count}&appid=${
+  const count = 5; // TODO - make this a function param with 5 as the default
+
+  let searchString = `${search}`;
+
+  if (location.useLocation && location.coordinates) {
+    const coords = location.coordinates;
+    searchString = `lat=${coords.lat}&lon=${coords.lng}`;
+  }
+
+  const url = `${apiUrl}/forecast?${searchString}&cnt=${count}&units=${units}&appid=${
     Config.app.apiKey
   }`;
-
-  const url = `${apiUrl}/forecast?${searchString}`;
 
   dispatch({ type: "FETCH_WEATHER_FORECAST" });
   axios
@@ -127,9 +146,6 @@ export const fetchWeatherForecast = (search: string) => (
           type: "UPDATE_WEATHER_FORECAST",
           payload: formattedData
         });
-        if (location.useZipCode) {
-          console.log("location.useZipCode");
-        }
         return;
       }
       const err = new Error(
